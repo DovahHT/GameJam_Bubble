@@ -8,6 +8,15 @@ public class BubbleMovement : MonoBehaviour
 
     private Rigidbody2D rb;
 
+    private void Update()
+    {
+        if (transform.position.y > 15)
+        {
+            Debug.Log("Deleted");
+            Destroy(gameObject);
+        }
+    }
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
