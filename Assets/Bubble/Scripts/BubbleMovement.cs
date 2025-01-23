@@ -1,4 +1,5 @@
 using UnityEngine;
+using EventDomain.Core;
 
 public class BubbleMovement : MonoBehaviour
 {
@@ -6,14 +7,16 @@ public class BubbleMovement : MonoBehaviour
     public float weight = 1.0f; // Weight to make the bubble drop down
     public float maxSpeed = 5.0f; // Maximum speed of the bubble
 
+    public int Index = 0;
+
     private Rigidbody2D rb;
 
     private void Update()
     {
-        if (transform.position.y > 15)
+        if (transform.position.y > 8)
         {
-            Debug.Log("Deleted");
-            Destroy(gameObject);
+            DestroyBubble();
+            EventSystem.Instance.BroadcastEvent<int>(EEventType.OnBubblePass, Index);
         }
     }
 
@@ -49,5 +52,16 @@ public class BubbleMovement : MonoBehaviour
     public void SetFloatStrength(float newFloatStrength)
     {
         floatStrength = newFloatStrength;
+    }
+
+    private void OnMouseUpAsButton()
+    {
+        DestroyBubble();
+        EventSystem.Instance.BroadcastEvent<int>(EEventType.OnBubbleDestroy, Index);
+    }
+
+    private void DestroyBubble()
+    {
+        Destroy(gameObject);
     }
 }

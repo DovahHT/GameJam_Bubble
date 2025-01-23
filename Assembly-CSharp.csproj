@@ -60,15 +60,20 @@
     <Analyzer Include="D:\Program Files\Unity\Editors\2022.3.27f1\Editor\Data\Tools\Unity.SourceGenerators\Unity.Properties.SourceGenerator.dll" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\UI\Scripts\BaseScreen.cs" />
     <Compile Include="Assets\EventSystem\IEvent.cs" />
     <Compile Include="Assets\EventSystem\EventExtension.cs" />
+    <Compile Include="Assets\Managers\MainGameManager.cs" />
     <Compile Include="Assets\Bubble\Scripts\ClickDetector.cs" />
     <Compile Include="Assets\EventSystem\Messenger.cs" />
+    <Compile Include="Assets\UI\Scripts\BaseScreenGeneric.cs" />
     <Compile Include="Assets\EventSystem\EventSystem.cs" />
+    <Compile Include="Assets\Managers\WaveController.cs" />
     <Compile Include="Assets\UI\Scripts\HUDScreen.cs" />
     <Compile Include="Assets\Bubble\Scripts\BubbleSpawner.cs" />
     <Compile Include="Assets\Bubble\Scripts\BubbleMovement.cs" />
     <Compile Include="Assets\PlayableCharacter\Scripts\CharacterMovement.cs" />
+    <Compile Include="Assets\UI\Scripts\MainMenuScreen.cs" />
     <Compile Include="Assets\Bubble\Scripts\RandomBubbleSpawner.cs" />
   </ItemGroup>
   <ItemGroup>

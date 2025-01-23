@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using EventDomain.Core;
 
 public class RandomBubbleSpawner : MonoBehaviour
 {
@@ -34,7 +35,6 @@ public class RandomBubbleSpawner : MonoBehaviour
 
     private IEnumerator SpawnWave()
     {
-        HUDScreen.Instance.ShowStartWaveText(currentWave + 1);
         // Wait for the initial delay before starting the wave
         yield return new WaitForSeconds(initialWaveDelay);
 
@@ -70,7 +70,10 @@ public class RandomBubbleSpawner : MonoBehaviour
         GameObject bubblePrefab = bubblePrefabs[prefabIndex];
 
         // Spawn the bubble
-        Instantiate(bubblePrefab, spawnPosition, Quaternion.identity);
+        var bubble = Instantiate(bubblePrefab, spawnPosition, Quaternion.identity);
+        bubble.GetComponent<BubbleMovement>().Index = prefabIndex;
+
+        EventSystem.Instance.BroadcastEvent<int>(EEventType.OnBubbleSpawn, prefabIndex);
     }
 
     private int GetRandomBubblePrefabIndex()
