@@ -14,10 +14,10 @@ public class WaveController : MonoBehaviour
     private int currentWaveIndex;
     private bool gameOver;
     private bool isWaveEnded;
-    private int totalBubbleCount;
     public int health;
 
-    private Dictionary<int, int> currentWaveBubbleDict = new Dictionary<int, int>();
+    public List<BubbleMovement> currentWaveBubbles = new List<BubbleMovement>();
+
 
     private void Awake()
     {
@@ -35,9 +35,9 @@ public class WaveController : MonoBehaviour
     {
         StartCoroutine(StartWaves());
 
-        EventSystem.Instance.ListenToEvent<int>(EEventType.OnBubbleSpawn, OnBubbleSpawn);
-        EventSystem.Instance.ListenToEvent<int>(EEventType.OnBubblePass, OnBubblePass);
-        EventSystem.Instance.ListenToEvent<int>(EEventType.OnBubbleDestroy, OnBubbleDestroy);
+        EventSystem.Instance.ListenToEvent<BubbleMovement>(EEventType.OnBubbleSpawn, OnBubbleSpawn);
+        EventSystem.Instance.ListenToEvent<BubbleMovement>(EEventType.OnBubblePass, OnBubblePass);
+        EventSystem.Instance.ListenToEvent<BubbleMovement>(EEventType.OnBubbleDestroy, OnBubbleDestroy);
     }
 
     IEnumerator StartWaves()
@@ -54,8 +54,7 @@ public class WaveController : MonoBehaviour
             yield return new WaitForSeconds(endWaveDelay);
 
             HUDScreen.Instance.ShowStartWaveText(currentWaveIndex);
-            currentWaveBubbleDict.Clear();
-            totalBubbleCount = 0;
+            currentWaveBubbles.Clear();
             HUDScreen.Instance.SetHealth(health);
             bubbleSpawner.StartWave();
             isWaveEnded = false;
@@ -76,55 +75,45 @@ public class WaveController : MonoBehaviour
         }
     }
 
-    private void OnBubbleSpawn(int index)
+    private void OnBubbleSpawn(BubbleMovement bubble)
     {
-        if (currentWaveBubbleDict.ContainsKey(index))
-        {
-            currentWaveBubbleDict[index]++;
-        }
-        else
-        {
-            currentWaveBubbleDict.Add(index, 1);
-        }
-        totalBubbleCount++;
+        currentWaveBubbles.Add(bubble);
     }
 
-    private void OnBubblePass(int index)
+    private void OnBubblePass(BubbleMovement bubble)
     {
-        if (RemoveBubble(index))
+        if (RemoveBubble(bubble))
         {
-            health -= index + 1;
+            health -= bubble.Index + 1;
             HUDScreen.Instance.SetHealth(health);
 
             if (health <= 0)
             {
                 gameOver = true;
             }
-            else if (totalBubbleCount <= 0)
+            else if (currentWaveBubbles.Count <= 0)
             {
                 isWaveEnded = true;
             }
         }
     }
 
-    private void OnBubbleDestroy(int index)
+    private void OnBubbleDestroy(BubbleMovement bubble)
     {
-        if (RemoveBubble(index))
+        if (RemoveBubble(bubble))
         {
-            if (totalBubbleCount <= 0)
+            if (currentWaveBubbles.Count <= 0)
             {
                 isWaveEnded = true;
             }
         }
     }
 
-    private bool RemoveBubble(int index)
+    private bool RemoveBubble(BubbleMovement bubble)
     {
-        if (currentWaveBubbleDict.ContainsKey(index) && currentWaveBubbleDict[index] > 0)
+        if (currentWaveBubbles.Contains(bubble))
         {
-            currentWaveBubbleDict[index]--;
-            totalBubbleCount--;
-
+            currentWaveBubbles.Remove(bubble);
             return true;
         }
         else

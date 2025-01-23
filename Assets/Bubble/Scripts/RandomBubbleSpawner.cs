@@ -70,10 +70,10 @@ public class RandomBubbleSpawner : MonoBehaviour
         GameObject bubblePrefab = bubblePrefabs[prefabIndex];
 
         // Spawn the bubble
-        var bubble = Instantiate(bubblePrefab, spawnPosition, Quaternion.identity);
-        bubble.GetComponent<BubbleMovement>().Index = prefabIndex;
+        BubbleMovement bubble = Instantiate(bubblePrefab, spawnPosition, Quaternion.identity).GetComponent<BubbleMovement>();
+        bubble.Index = prefabIndex;
 
-        EventSystem.Instance.BroadcastEvent<int>(EEventType.OnBubbleSpawn, prefabIndex);
+        EventSystem.Instance.BroadcastEvent<BubbleMovement>(EEventType.OnBubbleSpawn, bubble);
     }
 
     private int GetRandomBubblePrefabIndex()

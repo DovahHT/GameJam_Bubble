@@ -68,6 +68,7 @@
     <Compile Include="Assets\EventSystem\Messenger.cs" />
     <Compile Include="Assets\UI\Scripts\BaseScreenGeneric.cs" />
     <Compile Include="Assets\EventSystem\EventSystem.cs" />
+    <Compile Include="Assets\Fan\Scripts\FanController.cs" />
     <Compile Include="Assets\Managers\WaveController.cs" />
     <Compile Include="Assets\UI\Scripts\HUDScreen.cs" />
     <Compile Include="Assets\Bubble\Scripts\BubbleSpawner.cs" />
